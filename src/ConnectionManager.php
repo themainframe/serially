@@ -32,13 +32,13 @@ class ConnectionManager
      * @throws \Exception
      * @return ConnectionInterface
      */
-    public function connect($deviceDescriptor)
+    public function getConnection($deviceDescriptor)
     {
         switch ($this->detectPlatform()) {
 
             case 'linux':
 
-                $newConnection = new LinuxConnection();
+                $newConnection = new LinuxConnection($deviceDescriptor);
                 $this->connections[] = $newConnection;
 
                 return $newConnection;
@@ -47,7 +47,7 @@ class ConnectionManager
 
             case 'darwin':
 
-                $newConnection = new DarwinConnection();
+                $newConnection = new DarwinConnection($deviceDescriptor);
                 $this->connections[] = $newConnection;
 
                 return $newConnection;
@@ -105,8 +105,6 @@ class ConnectionManager
         // Get stdout and stderr
         $stdOut = stream_get_contents($pipes[1]);
         $stdErr = stream_get_contents($pipes[2]);
-
-        print $stdOut;
 
         // Close pipes
         fclose($pipes[1]);

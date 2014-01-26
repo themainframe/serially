@@ -18,11 +18,13 @@ namespace Serially;
  */
 interface ConnectionInterface
 {
+    public function open($mode = 'r+b');
+
     public function readByte();
     public function readLine();
 
-    public function writeByte();
-    public function writeLine();
+    public function writeByte($byte);
+    public function writeLine($line);
 
     public function close();
 
