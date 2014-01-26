@@ -1,0 +1,19 @@
+{
+    "name": "themainframe/serially",
+    "description": "Talk to serial devices in PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Damien Walsh",
+            "email": "me@damow.net"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+      "psr-4": {
+          "Serially": "src/"
+      }
+    }
+}
