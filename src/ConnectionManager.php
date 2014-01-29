@@ -8,6 +8,11 @@
 
 namespace Serially;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Serially\PlatformSpecific\LinuxConnection;
+use Serially\PlatformSpecific\DarwinConnection;
+
 /**
  * ConnectionManager
  *
@@ -25,6 +30,21 @@ class ConnectionManager
     private $connections = array();
 
     /**
+     * A logger.
+     *
+     * @var LoggerInterface
+     */
+    private $logger = null;
+
+    /**
+     * Create a new Connection Manager.
+     */
+    public function __construct()
+    {
+        $this->logger = new NullLogger();
+    }
+
+    /**
      * Connect to a device described by $deviceDescriptor, returning a
      * connection implementing the ConnectionInterface interface.
      *
@@ -34,11 +54,15 @@ class ConnectionManager
      */
     public function getConnection($deviceDescriptor)
     {
-        switch ($this->detectPlatform()) {
+        $platform = $this->detectPlatform();
+        $this->logger->info('Platform identified as ' . $platform);
+
+        switch ($platform) {
 
             case 'linux':
 
                 $newConnection = new LinuxConnection($deviceDescriptor);
+                $newConnection->setLogger($this->logger);
                 $this->connections[] = $newConnection;
 
                 return $newConnection;
@@ -48,6 +72,7 @@ class ConnectionManager
             case 'darwin':
 
                 $newConnection = new DarwinConnection($deviceDescriptor);
+                $newConnection->setLogger($this->logger);
                 $this->connections[] = $newConnection;
 
                 return $newConnection;
@@ -84,15 +109,28 @@ class ConnectionManager
         }
 
         // TODO: Add support for Windows
-        return '';
+
+        // Platform detection failed
+        return false;
+    }
+
+    /**
+     * Set the logger that should be used by the manager and any connections
+     * that it creates.
+     *
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     private function detectStty()
     {
-        return $this->exec('stty --version') === 0;
+        return $this->execute('stty --version') === 0;
     }
 
-    private function exec($command)
+    private function execute($command)
     {
         $desc = array(
             1 => array("pipe", "w"),
@@ -100,6 +138,7 @@ class ConnectionManager
         );
 
         // Execute the command
+        $this->logger->debug('Execute: ' . $command);
         $process = proc_open($command, $desc, $pipes);
 
         // Get stdout and stderr
