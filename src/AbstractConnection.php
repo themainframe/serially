@@ -32,23 +32,61 @@ abstract class AbstractConnection
     const FLOW_CONTROL_RTS_CTS = 1;
     const FLOW_CONTROL_XON_XOFF = 2;
 
-
+    /**
+     * The underlying resource for the connection.
+     *
+     * @var resource
+     */
     protected $handle = null;
+
+    /**
+     * The name of the
+     *
+     * @var string
+     */
     protected $device = '';
+
+    /**
+     * The character to use as the newline value.
+     *
+     * @var string
+     */
     protected $newLine = PHP_EOL;
+
+    /**
+     * The logger.
+     *
+     * @var null|\Psr\Log\LoggerInterface
+     */
     protected $logger = null;
 
+    /**
+     * Open the device specified by $device.
+     *
+     * @param string $device
+     */
     public function __construct($device)
     {
         $this->logger = new NullLogger();
         $this->device = $device;
     }
 
+    /**
+     * Set the logger to use.
+     *
+     * @param LoggerInterface $logger
+     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
+    /**
+     * Run a system command.
+     *
+     * @param string $command
+     * @return int
+     */
     protected function execute($command)
     {
         $desc = array(
