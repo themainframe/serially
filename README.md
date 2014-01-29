@@ -38,3 +38,7 @@ Debugging serial devices and the communication between them can be difficult. Se
 that data received before `readLine()` or `readByte()` is called may or may not be available.
 
 **Platform** agility is a work-in-progress. The `PlatformSpecific` namespace contains platform-specific connection implementations (of `ConnectionInterface`) for Mac OS X (Darwin) and Linux. A Windows one may emerge soon. 
+
+## Attributions &amp; Thanks
+
+* Heavilly inspired by rubberneck's [php-serial](https://github.com/rubberneck/php-serial/).
