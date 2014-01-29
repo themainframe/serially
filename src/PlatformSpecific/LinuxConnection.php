@@ -18,7 +18,7 @@ use Serially\ConnectionInterface;
  *
  * @package Serially
  */
-abstract class LinuxConnection extends AbstractConnection implements ConnectionInterface
+class LinuxConnection extends AbstractConnection implements ConnectionInterface
 {
     /**
      * @todo Implement me
