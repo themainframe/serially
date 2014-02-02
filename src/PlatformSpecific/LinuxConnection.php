@@ -63,6 +63,17 @@ class LinuxConnection extends AbstractConnection implements ConnectionInterface
     }
 
     /**
+     * Reads data available on the connection.
+     *
+     * @param int $size The number of bytes to read.
+     * @return mixed
+     */
+    public function read($size)
+    {
+        return fread($this->handle, $size);
+    }
+
+    /**
      * Read bytes from the connection until the newLine character appears.
      * Return the entire string.
      *
@@ -93,6 +104,17 @@ class LinuxConnection extends AbstractConnection implements ConnectionInterface
     public function writeByte($byte)
     {
         fwrite($this->handle, substr($byte, 0, 1));
+    }
+
+    /**
+     * Write arbitrary data to the connection.
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function write($data)
+    {
+        fwrite($this->handle, $data);
     }
 
     /**

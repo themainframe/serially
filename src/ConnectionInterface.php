@@ -34,6 +34,14 @@ interface ConnectionInterface
     public function readByte();
 
     /**
+     * Reads data available on the connection.
+     *
+     * @param int $size The number of bytes to read.
+     * @return mixed
+     */
+    public function read($size);
+
+    /**
      * Read bytes from the connection until the newLine character appears.
      * Return the entire string.
      *
@@ -51,6 +59,14 @@ interface ConnectionInterface
      * @return mixed
      */
     public function writeByte($byte);
+
+    /**
+     * Write arbitrary data to the connection.
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function write($data);
 
     /**
      * Write $line to the connection, followed by the defined newLine character.
